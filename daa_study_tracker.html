@@ -155,13 +155,41 @@ body{font-family:var(--font-sans);background:var(--color-background-tertiary);co
 
 <div class="main">
   <div class="tab-content active" id="tab-all">
+    <div style="background:var(--purple-light);border:0.5px solid var(--purple);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:var(--purple)">
+      💡 <strong>Tip:</strong> Click on a unit to expand topics. Check off topics and LeetCode problems as you complete them. Your progress auto-saves!
+    </div>
     <div id="units-container"></div>
   </div>
-  <div class="tab-content" id="tab-u1"><div id="unit-u1-solo"></div></div>
-  <div class="tab-content" id="tab-u2"><div id="unit-u2-solo"></div></div>
-  <div class="tab-content" id="tab-u3"><div id="unit-u3-solo"></div></div>
-  <div class="tab-content" id="tab-u4"><div id="unit-u4-solo"></div></div>
-  <div class="tab-content" id="tab-u5"><div id="unit-u5-solo"></div></div>
+  <div class="tab-content" id="tab-u1">
+    <div style="background:var(--purple-light);border:0.5px solid var(--purple);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:var(--purple)">
+      💡 <strong>Tip:</strong> Check off topics and LeetCode problems as you complete them. Progress auto-saves!
+    </div>
+    <div id="unit-u1-solo"></div>
+  </div>
+  <div class="tab-content" id="tab-u2">
+    <div style="background:var(--teal-light);border:0.5px solid var(--teal);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:var(--teal)">
+      💡 <strong>Tip:</strong> Check off topics and LeetCode problems as you complete them. Progress auto-saves!
+    </div>
+    <div id="unit-u2-solo"></div>
+  </div>
+  <div class="tab-content" id="tab-u3">
+    <div style="background:var(--blue-light);border:0.5px solid var(--blue);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:var(--blue)">
+      💡 <strong>Tip:</strong> Check off topics and LeetCode problems as you complete them. Progress auto-saves!
+    </div>
+    <div id="unit-u3-solo"></div>
+  </div>
+  <div class="tab-content" id="tab-u4">
+    <div style="background:var(--amber-light);border:0.5px solid var(--amber);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:var(--amber)">
+      💡 <strong>Tip:</strong> Check off topics and LeetCode problems as you complete them. Progress auto-saves!
+    </div>
+    <div id="unit-u4-solo"></div>
+  </div>
+  <div class="tab-content" id="tab-u5">
+    <div style="background:var(--red-light);border:0.5px solid var(--red);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:var(--red)">
+      💡 <strong>Tip:</strong> Check off topics and LeetCode problems as you complete them. Progress auto-saves!
+    </div>
+    <div id="unit-u5-solo"></div>
+  </div>
   <div class="tab-content" id="tab-tests"><div id="tests-container"></div></div>
 </div>
 
@@ -676,7 +704,13 @@ function showTab(tab){
   document.querySelectorAll('.nav-btn').forEach(el=>el.classList.remove('active'));
   const target=document.getElementById('tab-'+tab);
   if(target)target.classList.add('active');
-  event.target.classList.add('active');
+  // Find and activate the corresponding nav button
+  const navBtns=document.querySelectorAll('.nav-btn');
+  const tabs=['all','u1','u2','u3','u4','u5','tests'];
+  const idx=tabs.indexOf(tab);
+  if(idx>=0&&idx<navBtns.length){
+    navBtns[idx].classList.add('active');
+  }
 }
 
 function renderTests(){
@@ -723,6 +757,35 @@ function closeModal(e){
   if(!e||e.target===document.getElementById('modal'))
     document.getElementById('modal').style.display='none';
 }
+
+function resetProgress(){
+  if(confirm('Are you sure you want to reset all progress? This cannot be undone.')){
+    data.completedTopics={};
+    data.completedLC={};
+    data.notes={};
+    data.streak=0;
+    data.lastActive=null;
+    saveData();
+    rerenderAll();
+    updateHeader();
+  }
+}
+
+// Keyboard shortcuts
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){
+    closeModal();
+  }
+  // Ctrl/Cmd + number to switch tabs
+  if((e.ctrlKey||e.metaKey)&&e.key>='1'&&e.key<='6'){
+    e.preventDefault();
+    const tabs=['all','u1','u2','u3','u4','u5','tests'];
+    const idx=parseInt(e.key)-1;
+    if(idx<tabs.length){
+      showTab(tabs[idx]);
+    }
+  }
+});
 
 loadData();
 renderTests();
