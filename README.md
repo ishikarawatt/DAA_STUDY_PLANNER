@@ -14,7 +14,7 @@ Instead of random studying, this tracker helps me stay organized, practice regul
 - Unit 2: Sorting & Divide & Conquer  
 - Unit 3: Graph Algorithms  
 - Unit 4: Greedy & Dynamic Programming  
-- Unit 5: Hashing, String Matching & NP Problems  
+- Unit 5: Hashing, String Matching & NP Problems
 
 ---
 
